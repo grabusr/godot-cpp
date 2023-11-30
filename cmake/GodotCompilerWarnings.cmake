@@ -62,7 +62,7 @@ target_compile_options( ${PROJECT_NAME} PRIVATE
         # Broke on MethodBind templates before GCC 11.
         -Wlogical-op
     >
-    $<$<AND:${compiler_is_gnu},${compiler_less_than_v11}>:
+    $<$<AND:${compiler_is_gnu}>:
         # Regression in GCC 9/10, spams so much in our variadic templates that we need to outright disable it.
         -Wno-type-limits
     >
