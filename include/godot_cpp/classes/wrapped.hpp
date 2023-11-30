@@ -325,7 +325,7 @@ public:                                                                         
 		if (p_instance && m_class::_get_validate_property()) {                                                                                                                         \
 			ret = m_inherits::validate_property_bind(p_instance, p_property);                                                                                                          \
 			if (m_class::_get_validate_property() != m_inherits::_get_validate_property()) {                                                                                           \
-				m_class *cls = reinterpret_cast<m_class *>(p_instance);                                                                                                                \
+				auto cls = reinterpret_cast<m_class *>(p_instance);                                                                                                                \
 				::godot::PropertyInfo info(p_property);                                                                                                                                \
 				cls->_validate_property(info);                                                                                                                                         \
 				info._update(p_property);                                                                                                                                              \
