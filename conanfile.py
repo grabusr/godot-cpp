@@ -2,40 +2,44 @@ from conans import ConanFile, tools, CMake
 
 
 class GodotCppConan(ConanFile):
-    name = "GodotCpp"
+    name = "godot_cpp"
     version = "4.2.1"
     topics = "godot"
     settings = "os", "compiler", "build_type", "arch"
-    options = {"shared": [True, False]}
-    default_options = "shared=False"
-    generators = "cmake"
+    # generators = "cmake_find_package"
 
-    scons_options = {}
     exports_sources = "CMakeLists.txt", "src/*", "misc/*", "include/*", "binding_generator.py", "gdextension/*", "cmake/*"
 
     def build(self):
         cmake = CMake(self)
-        cmake.definitions["DCMAKE_INSTALL_PREFIX"] = "install-dir"
+        cmake.definitions["CMAKE_INSTALL_PREFIX"] = "install-dir"
         cmake.configure()
         cmake.build()
         cmake.install()
 
     def package(self):
-        self.copy("*.h", dst="include", src="gdextension")
-        self.copy("*.hpp", dst="include", src="gdextension")
-        self.copy("*.h", dst="include", src="include")
-        self.copy("*.hpp", dst="include", src="include")
-        self.copy("*.h", dst="include", src="gen/include")
-        self.copy("*.hpp", dst="include", src="gen/include")
+        cmake = CMake(self)
+        self.copy("*", dst=".", src="install-dir")
+        self.copy("FindGodotCpp.cmake", dst=".", src="cmake/")
 
-        self.copy("*.lib", dst="lib", keep_path=False)
-        self.copy("*.dll", dst="bin", keep_path=False)
-        self.copy("*.so", dst="lib", keep_path=False)
-        self.copy("*.dylib", dst="lib", keep_path=False)
-        self.copy("*.a", dst="lib", keep_path=False)
-
-        self.copy("*.cmake", dst="lib/cmake/GodotCpp", src="install-dir/lib/cmake")
-
+#
     def package_info(self):
-        self.cpp_info.includedirs = ["include", "include/core", "include/gen"]
-        self.cpp_info.libs = tools.collect_libs(self)
+        self.cpp_info.set_property("cmake_find_mode", "none")
+#         # self.cpp_info.set_property("cmake_target_name", "godot::godot-cpp")
+#         self.output.info("Package information: {}".format(self.cpp_info))
+#
+#         # self.cpp_info.includedirs = ["include", "include/core", "include/gen"]
+#         # self.cpp_info.libs = tools.collect_libs(self)
+#         print(self.cpp_info)
+#         print(self.cpp_info.names)
+#         print(self.cpp_info.libs)
+#
+#         # self.name = "godot"
+#         # self.cpp_info.set_property("cmake_file_name", "godot-cpp")
+#         # self.cpp_info.set_property("cmake_target_name", "godot::godot-cpp")
+#         #
+#         # self.cpp_info.components["godot-cpp"].set_property("cmake_file_name", "godot::godot-cpp")
+#         # self.cpp_info.components["godot-cpp"].set_property("cmake_target_name", "godot::godot-cpp")
+#         # self.cpp_info.components["godot-cpp"].libs = tools.collect_libs(self)
+#
+#

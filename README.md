@@ -142,3 +142,13 @@ generic reusable template.
 
 Or checkout the code for the [Summator example](https://github.com/paddy-exe/GDExtensionSummator)
 as shown in the [official documentation](https://docs.godotengine.org/en/latest/tutorials/scripting/gdextension/gdextension_cpp_example.html).
+
+
+## Build and upload conan package
+```
+conan create . --profile=default
+```
+
+```
+conan upload GodotCpp* -r qts-artifactory --all
+```
